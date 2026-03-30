@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>yes-tamin's hompy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --ink: #1a1a1a;
+      --soft: #6b6560;
+      --accent: #c9a96e;
+      --line: #e8e2d9;
+      --card: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--line);
+      padding: 2.5rem 2rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .site-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .site-title span {
+      color: var(--accent);
+    }
+
+    nav a {
+      font-size: 0.82rem;
+      color: var(--soft);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--ink); }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* ── POST CARD ── */
+    .post-card {
+      display: grid;
+      grid-template-columns: 1fr 2.2fr;
+      gap: 2rem;
+      padding: 2.2rem 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .post-card:hover { opacity: 0.75; }
+
+    .post-thumb {
+      aspect-ratio: 4/3;
+      background: var(--line);
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .post-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .post-thumb.no-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--accent);
+      font-family: 'Nanum Myeongjo', serif;
+    }
+
+    .post-meta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .post-date {
+      font-size: 0.75rem;
+      color: var(--soft);
+      letter-spacing: 0.06em;
+    }
+
+    .post-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .post-excerpt {
+      font-size: 0.88rem;
+      color: var(--soft);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      margin-top: 0.3rem;
+      width: fit-content;
+    }
+
+    /* ── SINGLE POST VIEW ── */
+    .post-detail { display: none; }
+
+    .post-detail.active { display: block; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--soft);
+      cursor: pointer;
+      margin-bottom: 2.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--ink); }
+
+    .detail-date { font-size: 0.78rem; color: var(--soft); margin-bottom: 0.8rem; letter-spacing: 0.05em; }
+
+    .detail-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .detail-body {
+      font-size: 1rem;
+      line-height: 1.95;
+      color: #2e2e2e;
+      white-space: pre-wrap;
+    }
+
+    /* ── LIST VIEW ── */
+    .list-view { display: block; }
+    .list-view.hidden { display: none; }
+
+    /* ── LOADING ── */
+    .loading {
+      text-align: center;
+      padding: 5rem 0;
+      color: var(--soft);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--soft);
+      letter-spacing: 0.04em;
+      margin-top: 4rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .post-card { grid-template-columns: 1fr; gap: 1rem; }
+      .site-title { font-size: 1.4rem; }
+      .detail-title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">yes-tamin's <span>hompy</span></div>
+  <nav>
+    <a href="#" onclick="showList()">글 목록</a>
+    <a href="#">소개</a>
+  </nav>
+</header>
+
+<div class="container">
+  <!-- 목록 -->
+  <div class="list-view" id="listView">
+    <div class="loading" id="loadingMsg">글을 불러오는 중...</div>
+    <div id="postList"></div>
+  </div>
+
+  <!-- 상세 -->
+  <div class="post-detail" id="postDetail">
+    <div class="back-btn" onclick="showList()">← 목록으로</div>
+    <div class="detail-date" id="detailDate"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <img class="detail-img" id="detailImg" src="" alt="" style="display:none"/>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+</div>
+
+<footer>© yes-tamin · made with 구글 스프레드시트 🌿</footer>
+
+<script>
+  // ✏️ 여기에 Apps Script 배포 URL을 넣으세요
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzeAP7XMbN0yGK1c6feWBc1VZkqzKoanOJzIelSuQXB0aTfyM1I5fUR_2QHNSscu1I_/exec';
+
+  let posts = [];
+
+  async function loadPosts() {
+    try {
+      const res = await fetch(SHEET_URL);
+      const data = await res.json();
+      posts = data;
+      renderList();
+    } catch (e) {
+      document.getElementById('loadingMsg').textContent = '글을 불러오지 못했어요. SHEET_URL을 확인해주세요.';
+    }
+  }
+
+  function renderList() {
+    const container = document.getElementById('postList');
+    document.getElementById('loadingMsg').style.display = 'none';
+
+    if (!posts.length) {
+      container.innerHTML = '<p style="color:var(--soft);padding:3rem 0;">아직 작성된 글이 없어요.</p>';
+      return;
+    }
+
+    container.innerHTML = posts.map((p, i) => `
+      <div class="post-card" onclick="showPost(${i})">
+        <div class="post-thumb ${p.image ? '' : 'no-img'}">
+          ${p.image
+            ? `<img src="${driveUrl(p.image)}" alt="${p.title}" />`
+            : `✦`}
+        </div>
+        <div class="post-meta">
+          <div class="post-date">${p.date || ''}</div>
+          <div class="post-title">${p.title || '제목 없음'}</div>
+          <div class="post-excerpt">${p.content || ''}</div>
+          ${p.tag ? `<span class="post-tag">${p.tag}</span>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function showPost(i) {
+    const p = posts[i];
+    document.getElementById('detailDate').textContent = p.date || '';
+    document.getElementById('detailTitle').textContent = p.title || '';
+    document.getElementById('detailBody').textContent = p.content || '';
+
+    const img = document.getElementById('detailImg');
+    if (p.image) {
+      img.src = driveUrl(p.image);
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
+
+    document.getElementById('listView').classList.add('hidden');
+    document.getElementById('postDetail').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function showList() {
+    document.getElementById('listView').classList.remove('hidden');
+    document.getElementById('postDetail').classList.remove('active');
+  }
+
+  // 구글 드라이브 공유링크 → 직접 이미지 URL 변환
+  function driveUrl(url) {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    return url;
+  }
+
+  loadPosts();
+</script>
+</body>
+</html>
